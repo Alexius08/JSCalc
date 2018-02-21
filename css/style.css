@@ -1,0 +1,23 @@
+button{
+  width:40px;
+  background-color:#eee;
+}
+#equals{
+  width:84px;
+  background-color:#99f;
+}
+.num{
+  background-color:#faa;
+}
+.clear{
+  background-color:red;
+}
+.op{
+  background-color:#afa;
+}
+#screen{
+  width:170px; /* 15 digits*/
+  text-align:right;
+  border:1px black solid;
+  font-family:"Courier New", monospace;
+}
