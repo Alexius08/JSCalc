@@ -1,9 +1,14 @@
 let selectedOp="", canGetNextNum=false, hasError=false;
 
-function num(){
-  this.digits = 0;
-  this.decPoint = 0;
-  this.hasDecPoint = false;
+class num{
+  constructor(){
+    this.reset();
+  }
+  reset() {
+    this.digits = 0;
+    this.decPoint = 0;
+    this.hasDecPoint = false;
+  }
 }
 
 let operand = [new num(), new num()];
@@ -20,11 +25,7 @@ document.getElementById("removecurrent").addEventListener("click", () => {
 document.getElementById("clearall").addEventListener("click", () => {
   clearcurrent();
   Array.from(operators, o => o.style.backgroundColor = "#afa");
-  operand[1] = {
-    digits: undefined,
-    decPoint: 0,
-    hasDecPoint: false
-  }
+  operand[1].reset();
   selectedOp="";
   hasError=false;
 });
@@ -45,7 +46,7 @@ document.getElementById("dot").addEventListener("click", () => {
 document.getElementById("changesign").addEventListener("click", () => {
   if(!hasError){
     if(!canGetNextNum){
-      operand[0].digits=-operand[0].digits;
+      operand[0].digits *= -1;
       screen.innerHTML = operand[0].hasDecPoint ? operand[0].digits/(10** operand[0].decPoint).toFixed(operand[0].decPoint) : operand[0].digits;
     }
   }
@@ -98,11 +99,7 @@ let digit = function(){
 Array.from(numbers, d => d.addEventListener("click", digit));
 
 function clearcurrent(){
-  operand[0] = {
-    digits: 0,
-    decPoint: 0,
-    hasDecPoint: false
-  };
+  operand[0].reset();
   screen.innerHTML = 0;
 }
 
@@ -110,7 +107,7 @@ function calcAnswer(){
   try{
     switch(selectedOp){
       case "subtract":
-        operand[0].digits=-operand[0].digits;
+        operand[0].digits *= -1;
       case "add":
         if(!operand[1].hasDecPoint&&!operand[0].hasDecPoint){
           operand[1].digits += operand[0].digits;
@@ -121,7 +118,7 @@ function calcAnswer(){
             operand[1].digits *= (10**(operand[0].decPoint-operand[1].decPoint));
             operand[1].decPoint = operand[0].decPoint;
           }
-          else operand[0].digits *= Math.pow(10,(operand[1].decPoint-operand[0].decPoint));
+          else operand[0].digits *= (10 **(operand[1].decPoint-operand[0].decPoint));
           operand[1].digits += operand[0].digits;
           console.log("Check if ending zeros can be shaved off")
           while(operand[1].digits%10 == 0 && operand[1].decPoint>0){
